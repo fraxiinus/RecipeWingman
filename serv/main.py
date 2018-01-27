@@ -45,12 +45,10 @@ def implicit():
         out += x + "\n"
     return out
     
-@app.route('/text', methods=['GET'])
-def entities_text():
+@app.route('/process_input/<string:text>', methods=['GET'])
+def entities_text(text):
     """Detects entities in the text."""
     client = language.LanguageServiceClient()
-
-    text = "6 bamboo skewers, soaked in water for 20 minutes. 1/2 cup chile-garlic sauce. 1/2 cup honey. 1 pound medium shrimp, peeled and deveined."
 
     # Instantiates a plain text document.
     document = types.Document(
@@ -65,15 +63,20 @@ def entities_text():
     entity_type = ('UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION',
                    'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
     
+    ingredients = []
+    out = ""
+
     for entity in entities:
-        print('=' * 20)
-        print(u'{:<16}: {}'.format('name', entity.name))
-        print(u'{:<16}: {}'.format('type', entity_type[entity.type]))
-        print(u'{:<16}: {}'.format('metadata', entity.metadata))
-        print(u'{:<16}: {}'.format('salience', entity.salience))
-        print(u'{:<16}: {}'.format('wikipedia_url',
-              entity.metadata.get('wikipedia_url', '-')))
-    return "hmm"
+        ingredients.append(entity.name)
+        out += entity.name + ", "
+        #print('=' * 20)
+        #print(u'{:<16}: {}'.format('name', entity.name))
+        #print(u'{:<16}: {}'.format('type', entity_type[entity.type]))
+        #print(u'{:<16}: {}'.format('metadata', entity.metadata))
+        #print(u'{:<16}: {}'.format('salience', entity.salience))
+        #print(u'{:<16}: {}'.format('wikipedia_url',
+        #      entity.metadata.get('wikipedia_url', '-')))
+    return out
     
 @app.errorhandler(404)
 def not_found(error):
