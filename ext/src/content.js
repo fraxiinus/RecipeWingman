@@ -47,7 +47,7 @@ function AskServer(selection){
     // when the server responds, call BuildPopup which will build the actual popup menu
     xhttp.onload = function() {
         if(xhttp.status == 200){
-            console.log(xhttp.responseText);
+            //console.log(xhttp.responseText);
             BuildPopup(xhttp.responseText);
         }else{
             closeNav("load-container");
@@ -88,6 +88,7 @@ function BuildPopup(json){
         // create an item container element which will hold a single item's data
         var item_container = document.createElement("div");
         item_container.setAttribute("id", "item-container");
+        item_container.setAttribute("style", "font-family: verdana, arial, helvetica, sans-serif;");
 
         // create a item text container which helps organize the text and image positions
         var item_text_container = document.createElement("div");
@@ -100,11 +101,11 @@ function BuildPopup(json){
         }catch(TypeError){
             continue;
         }
-        
         name.setAttribute("id", "x-h2");
         item_text_container.appendChild(name);
 
         var break_line = document.createElement("br");
+        break_line.setAttribute("id", "x-br");
         item_text_container.appendChild(break_line);
 
         // create the item price element
@@ -123,6 +124,7 @@ function BuildPopup(json){
         item_text_container.appendChild(unit_cost);
 
         var break_line_2 = document.createElement("br");
+        break_line_2.setAttribute("id", "x-br");
         item_text_container.appendChild(break_line_2);
 
         // create SKU element
@@ -133,13 +135,14 @@ function BuildPopup(json){
         item_text_container.appendChild(sku);
 
         var break_line_3 = document.createElement("br");
+        break_line_3.setAttribute("id", "x-br");
         item_text_container.appendChild(break_line_3);
 
         // if not in stock at local store
         var stocked = document.createElement("xh3");
         stocked.setAttribute("id", "x-h3");
         if(!parsedData['results'][i][0].atstore){
-            stocked.innerText = "Available at another Wegmans location";
+            stocked.innerText = "Available at other Wegmans locations";
             stocked.setAttribute("style", "color: red;");
         }else{
             stocked.innerText = "In stock";
@@ -154,7 +157,11 @@ function BuildPopup(json){
         // create the image element and form url
         var picture = document.createElement("IMG");
         picture.setAttribute("id", "preview_img");
-        picture.setAttribute("src","https://www.wegmans.com" + parsedData['results'][i][0].image);
+        if(parsedData['results'][i][0].image == null){
+            picture.setAttribute("src", "https://i.imgur.com/MlG5iM9.jpg");
+        }else{
+            picture.setAttribute("src","https://www.wegmans.com" + parsedData['results'][i][0].image);
+        }
         item_image_container.appendChild(picture);
 
         // add the image and text containers

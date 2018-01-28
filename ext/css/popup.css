@@ -51,8 +51,11 @@
     text-align: left;
     top: 50%;
     left: 50%;
-    width: 400px;
-    height: 450px;
+    /*width: 400px;*/
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 450px;
+    max-height: 450px;
     transform: translate(-50%, -50%);
     border-style: none;
     border-radius: 8px;
@@ -70,17 +73,29 @@
 
 #x-h1{
     font-size: 20pt;
+    font-family: verdana, arial, helvetica, sans-serif;
     color: white;
 }
 
 #x-h2{
     font-size: 15pt;
+    font-family: verdana, arial, helvetica, sans-serif;
     color: white;
+    overflow: hidden;
+    text-overflow: ellipsis
+
 }
 
 #x-h3{
     font-size: 10pt;
+    font-family: verdana, arial, helvetica, sans-serif;
     color: white;
+    
+}
+
+#x-br{
+    font-size: 10pt;
+    font-family: verdana, arial, helvetica, sans-serif;
 }
 
 #item-container{
@@ -96,8 +111,12 @@
 }
 
 #item-text-container{
-    padding-top: 15px;
-    padding-left: 100px;
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 260px;
+    height: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 
 #item-image-container{
