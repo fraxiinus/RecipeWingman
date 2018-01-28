@@ -25,6 +25,11 @@
     z-index: 1001;
 }
 
+#preview_img{
+    height:400px;
+    width: 400px;
+}
+
 #popupcontainer{
     position: fixed;
     top:0;
@@ -38,15 +43,25 @@
 }
 
 #popupwindow{
+    padding-left: 10px;
+    padding-right: 10px;
     position: fixed;
     text-align: left;
     top: 50%;
     left: 50%;
-    width: 45%;
-    height: 35%;
+    width: 30%;
+    height: 80%;
     transform: translate(-50%, -50%);
     border-style: none;
     background-color: white;
     box-shadow: 0px 10px 64px 0px rgba(0,0,0,0.75);
     z-index: 1001;
+}
+
+#scroll-container{
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow-y: scroll;
+    max-height: 90%;
+    border:2px solid lightgray;
 }

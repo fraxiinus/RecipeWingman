@@ -1,4 +1,3 @@
-console.log("I'm loaded")
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -24,8 +23,8 @@ function AskServer(selection){
     xhttp.setRequestHeader("Content-type", "application/text");
     xhttp.onload = function() {
         //console.log(xhttp.responseText);
-        closeNav("load-container");
         var prod_obj = JSON.parse(xhttp.responseText);
+        console.log(xhttp.responseText);
         BuildPopup(prod_obj);
     }
     xhttp.send();
@@ -38,9 +37,27 @@ function BuildPopup(json){
     var window = document.createElement("div");
     window.setAttribute("id", "popupwindow");
 
+
     var title = document.createElement("h1");
-    title.innerText = json['results'][0][0]['name'];
+    title.innerText = "Results from Wegmans";
     window.appendChild(title);
+
+    var scroll_container = document.createElement("div");
+    scroll_container.setAttribute("id", "scroll-container");
+    window.appendChild(scroll_container);
+
+    var name = document.createElement("h1");
+    name.innerText = json['results'][0][0]['name'];
+    scroll_container.appendChild(name);
+
+    var cost = document.createElement("h3");
+    cost.innerHTML = json['results'][0][0]['price'];
+    scroll_container.appendChild(cost);
+
+    var picture = document.createElement("IMG");
+    picture.setAttribute("id", "preview_img");
+    picture.setAttribute("src","https://www.wegmans.com" + json['results'][0][0]['image']);
+    scroll_container.appendChild(picture);
 
     var closebt = document.createElement("buttom");
     closebt.innerText = "Cancel";
@@ -50,6 +67,9 @@ function BuildPopup(json){
     window.appendChild(closebt);
 
     container.appendChild(window);
+    
+    closeNav("load-container");
+
     document.body.appendChild(container);
     
 }
