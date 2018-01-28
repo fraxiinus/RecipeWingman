@@ -68,7 +68,7 @@ function BuildPopup(json){
     window.setAttribute("id", "popupwindow");
 
     // title for the window
-    var title = document.createElement("h1");
+    var title = document.createElement("xh1");
     title.innerText = "Results from Wegmans - 13790";
     title.setAttribute("id", "x-h1");
     window.appendChild(title);
@@ -94,13 +94,16 @@ function BuildPopup(json){
         item_text_container.setAttribute("id", "item-text-container");
 
         // create the item name element
-        var name = document.createElement("h2");
+        var name = document.createElement("xh2");
         name.innerText = parsedData['results'][i][0].name;
         name.setAttribute("id", "x-h2");
         item_text_container.appendChild(name);
 
+        var break_line = document.createElement("br");
+        item_text_container.appendChild(break_line);
+
         // create the item price element
-        var cost = document.createElement("h3");
+        var cost = document.createElement("xh3");
         cost.innerText = "$" + parsedData['results'][i][0].price;
         cost.setAttribute("id", "x-h3");
         cost.setAttribute("style","float: left; padding-right: 5px;")
@@ -108,14 +111,17 @@ function BuildPopup(json){
         total_cost += parsedData['results'][i][0].price;
 
         // create unit price element
-        var unit_cost = document.createElement("h3");
+        var unit_cost = document.createElement("xh3");
         unit_cost.innerText = "$" + (parsedData['results'][i][0].unitprice + "").substring(0, 4) + "/" + parsedData['results'][i][0].unitofmeasure;
         unit_cost.setAttribute("id", "x-h3");
         unit_cost.setAttribute("style", "color:rgb(226, 226, 226); margin-left:5px;");
         item_text_container.appendChild(unit_cost);
 
+        var break_line_2 = document.createElement("br");
+        item_text_container.appendChild(break_line_2);
+
         // create SKU element
-        var sku = document.createElement("h3");
+        var sku = document.createElement("xh3");
         sku.innerText = "SKU: " + parsedData['results'][i][0].sku;
         sku.setAttribute("id", "x-h3");
         sku.setAttribute("style","font-style: italic;");
