@@ -42,12 +42,18 @@ function AskServer(selection){
     disableScrolling();
     // make a request from the server
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://127.0.0.1:5000/get_products/" + selection);
+    xhttp.open("GET", "http://127.0.0.1:5000/get_products/" + selection.replace(/\//g,'i'));
     xhttp.setRequestHeader("Content-type", "application/json");
     // when the server responds, call BuildPopup which will build the actual popup menu
     xhttp.onload = function() {
-        console.log(xhttp.responseText);
-        BuildPopup(xhttp.responseText);
+        if(xhttp.status == 200){
+            console.log(xhttp.responseText);
+            BuildPopup(xhttp.responseText);
+        }else{
+            closeNav("load-container");
+            enableScrolling();
+        }
+        
     }
     xhttp.send();
 }
