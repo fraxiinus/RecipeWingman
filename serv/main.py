@@ -198,7 +198,6 @@ def newkey():
     print(rd)
     return rd['access_token']
 
-
 @app.errorhandler(404)
 def not_found(error):
 	return make_response(jsonify({'error': '404: Bad time to get lost, FRIEND!'}), 404)

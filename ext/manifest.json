@@ -15,6 +15,9 @@
             ],
             "js":[
                 "src/content.js"
+            ],
+            "css":[
+                "css/popup.css"
             ]
         }
     ],
