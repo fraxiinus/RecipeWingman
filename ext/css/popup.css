@@ -115,6 +115,7 @@
     padding-left: 10px;
     width: 260px;
     height: 85px;
+    line-height: 13pt;
     overflow: hidden;
     text-overflow: ellipsis
 }

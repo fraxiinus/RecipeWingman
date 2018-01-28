@@ -98,6 +98,9 @@ function BuildPopup(json){
         var name = document.createElement("xh2");
         try{
             name.innerText = parsedData['results'][i][0].name;
+            if(name.innerText == "N/A"){
+                continue;
+            }
         }catch(TypeError){
             continue;
         }
@@ -161,6 +164,9 @@ function BuildPopup(json){
             picture.setAttribute("src", "https://i.imgur.com/MlG5iM9.jpg");
         }else{
             picture.setAttribute("src","https://www.wegmans.com" + parsedData['results'][i][0].image);
+            picture.onerror = function(){
+                picture.setAttribute("src","https://i.imgur.com/MlG5iM9.jpg");
+            }
         }
         item_image_container.appendChild(picture);
 

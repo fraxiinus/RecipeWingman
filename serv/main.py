@@ -86,6 +86,13 @@ class WegmansClass:
                 unit_price = -1
                 unit_measure = "N/A"
                 atstore = False
+            except IndexError:
+                sku = -1
+                price = -1
+                name = "N/A"
+                unit_price = -1
+                unit_measure = "N/A"
+                atstore = False
 
         headers = {
             'Product-Subscription-Key': self.key,
