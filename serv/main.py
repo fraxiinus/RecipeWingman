@@ -9,11 +9,14 @@ import json
 app = Flask(__name__)
 
 class Product:
-    def __init__(self, name, price, image, velocity):
+    def __init__(self, sku, name, price, image, unitprice, unitofmeasure):
+        self.sku = sku
         self.name = name
         self.price = price
         self.image = image
-        self.velocity = velocity
+        #self.velocity = velocity
+        self.unitprice = unitprice
+        self.unitofmeasure = unitofmeasure
 
 class WegmansClass:
     def __init__(self):
@@ -40,7 +43,7 @@ class WegmansClass:
 
     def GetProduct(self, sku):
         get_price_url = 'https://wegmans-es.azure-api.net/pricepublic/pricing/current_prices/' + str(sku) + "/73"
-        get_velocity_url = 'https://wegmans-es.azure-api.net/productpublic/productavailability/' + str(sku) + "/73"
+        # get_velocity_url = 'https://wegmans-es.azure-api.net/productpublic/productavailability/' + str(sku) + "/73"
         get_image_url = 'https://wegmans-es.azure-api.net/productpublic/products/' + str(sku)
         #print(self.key)
         #print(self.auth)
@@ -50,12 +53,17 @@ class WegmansClass:
         }
         r = requests.get(get_price_url, headers=headers)
         try:
+            sku = json.loads(r.text)[0]['Sku']
             price = json.loads(r.text)[0]['Price']
             name = json.loads(r.text)[0]['Description']
+            unit_price = json.loads(r.text)[0]['UnitPrice']
+            unit_measure = json.loads(r.text)[0]['UnitPriceUnitOfMeasure']
         except KeyError:
-            price = "N/A"
+            sku = -1
+            price = -1
             name = "N/A"
-        #print(str(price) + name)
+            unit_price = -1
+            unit_measure = "N/A"
 
         headers = {
             'Product-Subscription-Key': self.key,
@@ -68,13 +76,13 @@ class WegmansClass:
         except KeyError:
             image = "N/A"
         
-        r = requests.get(get_velocity_url, headers=headers)
-        try:
-            velocity = json.loads(r.text)[0]['Velocity']
-        except KeyError:
-            velocity = "N/A"
+        #r = requests.get(get_velocity_url, headers=headers)
+        #try:
+        #    velocity = json.loads(r.text)[0]['Velocity']
+        #except KeyError:
+        #    velocity = "N/A"
 
-        return Product(name, price, image, velocity)
+        return Product(sku, name, price, image, unit_price, unit_measure)
 
 
 @app.route('/')
@@ -122,13 +130,13 @@ def entities_text(text):
                    'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
     
     ingredients = []
-    out = ""
+    #out = ""
     products = [] 
     wegmans = WegmansClass()
 
     for entity in entities:
         ingredients.append(entity.name)
-        out += entity.name + '\n'
+        #out += entity.name + '\n'
         weg_sku = wegmans.GetSKUs(entity.name)
 
         prod = []
@@ -136,7 +144,7 @@ def entities_text(text):
         for x in weg_sku:
             r = wegmans.GetProduct(x)
             prod.append(r)
-            out += r.name + ", " + str(r.price) + ", " + str(r.image) + str(r.velocity) + '#'
+            #out += r.name + ", " + str(r.price) + ", " + str(r.image) + str(r.velocity) + '#'
 
         products.append(prod)
 
@@ -148,16 +156,16 @@ def entities_text(text):
         #print(u'{:<16}: {}'.format('wikipedia_url',
         #      entity.metadata.get('wikipedia_url', '-')))
 
-    for x in ingredients:
-        print(x + '\n')
+    #for x in ingredients:
+    #    print(x + '\n')
 
-    for x in products:
-        for y in x:
-            print(y.name)
-            print(y.price)
-            print(y.velocity)
-            print(y.image)
-            print('\t')
+    #for x in products:
+    #    for y in x:
+    #        print(y.name)
+    #        print(y.price)
+    #        print(y.velocity)
+    #        print(y.image)
+    #        print('\t')
 
     js = json.dumps(products, default=lambda o: o.__dict__)
     
