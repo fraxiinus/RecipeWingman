@@ -1,6 +1,10 @@
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        if ('undefined' == typeof window.jQuery) {
+        } else {
+            console.log('jQuery is here');
+        }
         AskServer(request.greeting);
     });
 
@@ -20,12 +24,12 @@ function AskServer(selection){
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "http://127.0.0.1:5000/get_products/" + selection);
-    xhttp.setRequestHeader("Content-type", "application/text");
+    xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.onload = function() {
         //console.log(xhttp.responseText);
-        var prod_obj = JSON.parse(xhttp.responseText);
+        //var prod_obj = JSON.parse(xhttp.responseText);
         console.log(xhttp.responseText);
-        BuildPopup(prod_obj);
+        BuildPopup(xhttp.responseText);
     }
     xhttp.send();
 }
@@ -46,6 +50,13 @@ function BuildPopup(json){
     scroll_container.setAttribute("id", "scroll-container");
     window.appendChild(scroll_container);
 
+    var parsedData = JSON.parse(json);
+    for(var i = 0; i < parsedData['results'].length; i++){
+        console.log(parsedData['results'][i][0].name);
+    }
+    console.log(parsedData['results'][0][0].name);
+
+    /*
     var name = document.createElement("h1");
     name.innerText = json['results'][0][0]['name'];
     scroll_container.appendChild(name);
@@ -57,7 +68,7 @@ function BuildPopup(json){
     var picture = document.createElement("IMG");
     picture.setAttribute("id", "preview_img");
     picture.setAttribute("src","https://www.wegmans.com" + json['results'][0][0]['image']);
-    scroll_container.appendChild(picture);
+    scroll_container.appendChild(picture);*/
 
     var closebt = document.createElement("buttom");
     closebt.innerText = "Cancel";
