@@ -65,6 +65,8 @@ function BuildPopup(json){
     scroll_container.setAttribute("id", "scroll-container");
     window.appendChild(scroll_container);
 
+    var total_cost = 0.0;
+
     var parsedData = JSON.parse(json);
     for(var i = 0; i < parsedData['results'].length; i++){
         console.log(parsedData['results'][i][0].name);
@@ -83,6 +85,7 @@ function BuildPopup(json){
         cost.innerText = "$" + parsedData['results'][i][0].price;
         cost.setAttribute("id", "x-h3");
         item_text_container.appendChild(cost);
+        total_cost += parsedData['results'][i][0].price;
 
         var item_image_container = document.createElement("div");
         item_image_container.setAttribute("id", "item-image-container");
@@ -124,6 +127,14 @@ function BuildPopup(json){
         enableScrolling();
     }
     window.appendChild(closebt);
+
+    var checkout_bt = document.createElement("buttom");
+    checkout_bt.setAttribute("id", "x-button");
+    checkout_bt.setAttribute("style", "margin-left: 140px");
+    checkout_bt.innerText = "Add to cart - $" + total_cost;
+
+    window.appendChild(checkout_bt);
+
 
     container.appendChild(window);
     
