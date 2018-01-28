@@ -9,7 +9,7 @@ import json
 app = Flask(__name__)
 
 class Product:
-    def __init__(self, sku, name, price, image, unitprice, unitofmeasure):
+    def __init__(self, sku, name, price, image, unitprice, unitofmeasure, atstore):
         self.sku = sku
         self.name = name
         self.price = price
@@ -17,6 +17,7 @@ class Product:
         #self.velocity = velocity
         self.unitprice = unitprice
         self.unitofmeasure = unitofmeasure
+        self.atstore = atstore
 
 class WegmansClass:
     def __init__(self):
@@ -37,12 +38,15 @@ class WegmansClass:
         except KeyError:
             return []
         skus = []
-        for i in range(1):
-            skus.append(results[i]['ItemNumber'])
+        try:
+            skus.append(results[0]['ItemNumber'])
+        except IndexError:
+            print("Product not found")
         return skus
 
     def GetProduct(self, sku):
         get_price_url = 'https://wegmans-es.azure-api.net/pricepublic/pricing/current_prices/' + str(sku) + "/73"
+        outside_url = 'https://wegmans-es.azure-api.net/pricepublic/pricing/current_prices/' + str(sku)
         # get_velocity_url = 'https://wegmans-es.azure-api.net/productpublic/productavailability/' + str(sku) + "/73"
         get_image_url = 'https://wegmans-es.azure-api.net/productpublic/products/' + str(sku)
         #print(self.key)
@@ -58,12 +62,30 @@ class WegmansClass:
             name = json.loads(r.text)[0]['Description']
             unit_price = json.loads(r.text)[0]['UnitPrice']
             unit_measure = json.loads(r.text)[0]['UnitPriceUnitOfMeasure']
+            atstore = True
         except KeyError:
             sku = -1
             price = -1
             name = "N/A"
             unit_price = -1
             unit_measure = "N/A"
+            atstore = False
+        except IndexError:
+            r = requests.get(outside_url, headers=headers)
+            try:
+                sku = json.loads(r.text)[0]['Sku']
+                price = json.loads(r.text)[0]['Price']
+                name = json.loads(r.text)[0]['Description']
+                unit_price = json.loads(r.text)[0]['UnitPrice']
+                unit_measure = json.loads(r.text)[0]['UnitPriceUnitOfMeasure']
+                atstore = False
+            except KeyError:
+                sku = -1
+                price = -1
+                name = "N/A"
+                unit_price = -1
+                unit_measure = "N/A"
+                atstore = False
 
         headers = {
             'Product-Subscription-Key': self.key,
@@ -75,6 +97,8 @@ class WegmansClass:
             image = json.loads(r.text)['TradeIdentifierConfigurations'][0]['TradeIdentifiers'][0]['Images'][0]['Url']
         except KeyError:
             image = "N/A"
+        except IndexError:
+            image = "N/A"
         
         #r = requests.get(get_velocity_url, headers=headers)
         #try:
@@ -82,7 +106,7 @@ class WegmansClass:
         #except KeyError:
         #    velocity = "N/A"
 
-        return Product(sku, name, price, image, unit_price, unit_measure)
+        return Product(sku, name, price, image, unit_price, unit_measure, atstore)
 
 
 @app.route('/')

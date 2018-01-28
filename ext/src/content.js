@@ -95,7 +95,12 @@ function BuildPopup(json){
 
         // create the item name element
         var name = document.createElement("xh2");
-        name.innerText = parsedData['results'][i][0].name;
+        try{
+            name.innerText = parsedData['results'][i][0].name;
+        }catch(TypeError){
+            continue;
+        }
+        
         name.setAttribute("id", "x-h2");
         item_text_container.appendChild(name);
 
@@ -126,6 +131,21 @@ function BuildPopup(json){
         sku.setAttribute("id", "x-h3");
         sku.setAttribute("style","font-style: italic;");
         item_text_container.appendChild(sku);
+
+        var break_line_3 = document.createElement("br");
+        item_text_container.appendChild(break_line_3);
+
+        // if not in stock at local store
+        var stocked = document.createElement("xh3");
+        stocked.setAttribute("id", "x-h3");
+        if(!parsedData['results'][i][0].atstore){
+            stocked.innerText = "Available at another Wegmans location";
+            stocked.setAttribute("style", "color: red;");
+        }else{
+            stocked.innerText = "In stock";
+            stocked.setAttribute("style", "color: green;");
+        }
+        item_text_container.appendChild(stocked);
 
         // create the item image container
         var item_image_container = document.createElement("div");
