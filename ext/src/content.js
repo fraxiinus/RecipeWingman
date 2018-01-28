@@ -15,11 +15,24 @@ function AskServer(selection){
     var window = document.createElement("div");
     window.setAttribute("id", "load-window");
     
-    var loading = document.createElement("h1");
+    /*var loading = document.createElement("h1");
     loading.setAttribute("id", "x-h1");
     loading.innerText = "Loading...";
-    window.appendChild(loading);
+    window.appendChild(loading);*/
 
+    var loading = document.createElement("div");
+    loading.setAttribute("class", "spinner");
+
+    var loading_cube_1 = document.createElement("div");
+    loading_cube_1.setAttribute("class", "cube1");
+
+    var loading_cube_2 = document.createElement("div");
+    loading_cube_2.setAttribute("class", "cube2");
+
+    loading.appendChild(loading_cube_1);
+    loading.appendChild(loading_cube_2);
+
+    window.appendChild(loading);
     container.appendChild(window);
     document.body.appendChild(container);
     disableScrolling();
