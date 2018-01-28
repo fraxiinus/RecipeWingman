@@ -46,6 +46,7 @@ function AskServer(selection){
     xhttp.setRequestHeader("Content-type", "application/json");
     // when the server responds, call BuildPopup which will build the actual popup menu
     xhttp.onload = function() {
+        console.log(xhttp.responseText);
         BuildPopup(xhttp.responseText);
     }
     xhttp.send();
@@ -96,8 +97,23 @@ function BuildPopup(json){
         var cost = document.createElement("h3");
         cost.innerText = "$" + parsedData['results'][i][0].price;
         cost.setAttribute("id", "x-h3");
+        cost.setAttribute("style","float: left; padding-right: 5px;")
         item_text_container.appendChild(cost);
         total_cost += parsedData['results'][i][0].price;
+
+        // create unit price element
+        var unit_cost = document.createElement("h3");
+        unit_cost.innerText = "$" + (parsedData['results'][i][0].unitprice + "").substring(0, 4) + "/" + parsedData['results'][i][0].unitofmeasure;
+        unit_cost.setAttribute("id", "x-h3");
+        unit_cost.setAttribute("style", "color:rgb(226, 226, 226); margin-left:5px;");
+        item_text_container.appendChild(unit_cost);
+
+        // create SKU element
+        var sku = document.createElement("h3");
+        sku.innerText = "SKU: " + parsedData['results'][i][0].sku;
+        sku.setAttribute("id", "x-h3");
+        sku.setAttribute("style","font-style: italic;");
+        item_text_container.appendChild(sku);
 
         // create the item image container
         var item_image_container = document.createElement("div");
@@ -129,9 +145,13 @@ function BuildPopup(json){
 
     // create the checkout button
     var checkout_bt = document.createElement("buttom");
-    checkout_bt.setAttribute("id", "x-button");
-    checkout_bt.setAttribute("style", "margin-left: 140px");
-    checkout_bt.innerText = "Add to cart - $" + total_cost;
+    checkout_bt.setAttribute("id", "x-button-2");
+    checkout_bt.setAttribute("style", "margin-left: 10px");
+    checkout_bt.innerText = "Add to cart - $" + (total_cost * 1.08).toFixed(2);
+    checkout_bt.onclick = function (){
+        checkout_bt.innerText = "Processing...";
+        setTimeout(delayButton, 3000);
+    }
     window.appendChild(checkout_bt);
 
     // add the window to the container
@@ -141,6 +161,15 @@ function BuildPopup(json){
     // display the completed menu
     document.body.appendChild(container);
     
+}
+
+function delayButton(){
+    var butt = document.getElementById("x-button-2");
+    butt.innerText = "Done!"
+    butt.onclick = function (){
+        closeNav("popupcontainer");
+        enableScrolling();
+    }
 }
 
 function closeNav(id){
