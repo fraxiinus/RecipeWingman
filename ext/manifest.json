@@ -14,8 +14,7 @@
                 "<all_urls>"
             ],
             "js":[
-                "src/content.js",
-                "src/jquery-3.1.1.js"
+                "src/content.js"
             ],
             "css":[
                 "css/popup.css"
