@@ -1,4 +1,4 @@
-chrome.contextMenus.create({title:"Send to Recipe2Wegmans",contexts: ["selection"], "onclick": onRequest})
+chrome.contextMenus.create({title:"Send to Recipe Wingman",contexts: ["selection"], "onclick": onRequest})
 
 function onRequest(info, tab) {
     var selection = info.selectionText
