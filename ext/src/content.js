@@ -15,11 +15,6 @@ function AskServer(selection){
     var window = document.createElement("div");
     window.setAttribute("id", "load-window");
     
-    /*var loading = document.createElement("h1");
-    loading.setAttribute("id", "x-h1");
-    loading.innerText = "Loading...";
-    window.appendChild(loading);*/
-
     var loading = document.createElement("div");
     loading.setAttribute("class", "spinner");
 
@@ -40,9 +35,6 @@ function AskServer(selection){
     xhttp.open("GET", "http://127.0.0.1:5000/get_products/" + selection);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.onload = function() {
-        //console.log(xhttp.responseText);
-        //var prod_obj = JSON.parse(xhttp.responseText);
-        console.log(xhttp.responseText);
         BuildPopup(xhttp.responseText);
     }
     xhttp.send();
@@ -95,29 +87,11 @@ function BuildPopup(json){
         picture.setAttribute("src","https://www.wegmans.com" + parsedData['results'][i][0].image);
         item_image_container.appendChild(picture);
 
-        /*var break_line = document.createElement("br");
-        break_line.setAttribute("id", "break-line");*/
-
         item_container.appendChild(item_image_container);
         item_container.appendChild(item_text_container);
 
         scroll_container.appendChild(item_container);        
     }
-    //
-
-    /*
-    var name = document.createElement("h1");
-    name.innerText = json['results'][0][0]['name'];
-    scroll_container.appendChild(name);
-
-    var cost = document.createElement("h3");
-    cost.innerHTML = json['results'][0][0]['price'];
-    scroll_container.appendChild(cost);
-
-    var picture = document.createElement("IMG");
-    picture.setAttribute("id", "preview_img");
-    picture.setAttribute("src","https://www.wegmans.com" + json['results'][0][0]['image']);
-    scroll_container.appendChild(picture);*/
 
     var closebt = document.createElement("buttom");
     closebt.setAttribute("id", "x-button");
