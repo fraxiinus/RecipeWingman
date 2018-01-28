@@ -8,7 +8,20 @@
         "default_title": "Re2Weg",
         "default_popup": "appmenu.html"
     },
+    "content_scripts":[
+        {
+            "matches":[
+                "<all_urls>"
+            ],
+            "js":[
+                "src/content.js"
+            ]
+        }
+    ],
+    "background": {
+        "scripts": ["src/bckgrd.js"]
+    },
     "permissions":[
-        "activeTab", "storage", "http://127.0.0.1:5000/*", "contextMenus"
+        "activeTab", "storage", "http://127.0.0.1:5000/*", "contextMenus", "background"
     ]
 }
